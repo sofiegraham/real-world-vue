@@ -1,5 +1,5 @@
 <template>
-  <router-link class='event-link' :to="{ name: 'event-show', params: { id: '1' } }">
+  <router-link class='event-link' :to="{ name: 'event-show', params: { id: event.id } }">
     <div class='event-card -shadow'>
       <span class='eyebrow'>@{{ event.time }} on  {{ event.date }}</span>
       <h4 class='title'>{{ event.title }}</h4>
@@ -9,31 +9,11 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class EventCard extends Vue {
-  // private title: string = 'Park Cleanup';
-  private event: {
-    id: number,
-    title: string,
-    date: string,
-    time: string,
-    attendees: Array<{ id: string, name: string }>,
-  } = {
-    id: 1,
-    title: 'Beach Cleanup',
-    date: 'Tues Aug 19, 2018',
-    time: '6:00',
-    attendees: [
-      { id: 'abc123',
-        name: 'Adam',
-      },
-      { id: 'def123',
-        name: 'Gregg',
-      },
-    ],
-  };
+  @Prop({type: Object}) public event: object;
 }
 </script>
 
