@@ -27,15 +27,15 @@ import EventService from '@/services/EventService.ts';
 
 @Component
 export default class EventShow extends Vue {
-  @Prop({ type: String }) public id!: string;
+  @Prop({ type: Number }) public id!: number;
 
   public event: {} = {};
 
   private created() {
     EventService.getEvent(this.id)
-    .then((res) => {
+    .then((res: { data: object }) => {
       this.event = res.data;
-    }).catch((err) => {
+    }).catch((err: object) => {
       throw(err);
     });
   }
