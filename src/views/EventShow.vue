@@ -30,11 +30,11 @@ export default class EventShow extends Vue {
   @Prop({ type: Number }) public id!: number;
 
   private created() {
-    this.$store.dispatch('fetchEvent', this.id)
+    this.$store.dispatch('event/fetchEvent', this.id)
   }
 
   get event() {
-    return this.$store.state.event
+    return this.$store.state.event.event
   }
 }
 </script>

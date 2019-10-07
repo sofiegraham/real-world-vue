@@ -1,8 +1,8 @@
+import { camelCase, upperFirst } from 'lodash';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
-import store from './store';
-import { camelCase, upperFirst } from 'lodash';
+import store from './store/store';
 
 const requireComponent = require.context(
   './components',
