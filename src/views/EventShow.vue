@@ -3,7 +3,7 @@
     <div class="event-header">
       <span class="eyebrow">@{{ event.time }} on {{ event.date }}</span>
       <h1 class="title">{{ event.title }}</h1>
-      <h5>Organized by {{ event.organizer }}</h5>
+      <h5>Organized by {{ event.organizer && event.organizer.name }}</h5>
       <h5>Category: {{ event.category }}</h5>
     </div>
     <BaseIcon name="map"><h2>Location</h2></BaseIcon>
@@ -23,21 +23,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import EventService from '@/services/EventService.ts';
+import {mapState} from 'vuex';
 
 @Component
 export default class EventShow extends Vue {
   @Prop({ type: Number }) public id!: number;
 
-  public event: {} = {};
-
   private created() {
-    EventService.getEvent(this.id)
-    .then((res: { data: object }) => {
-      this.event = res.data;
-    }).catch((err: object) => {
-      throw(err);
-    });
+    this.$store.dispatch('fetchEvent', this.id)
+  }
+
+  get event() {
+    return this.$store.state.event
   }
 }
 </script>
