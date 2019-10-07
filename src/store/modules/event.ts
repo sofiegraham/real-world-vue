@@ -24,12 +24,24 @@ export const mutations = {
 };
 
 export const actions = {
-  createEvent({commit}, event) {
+  createEvent({commit, dispatch}, event) {
     return EventService.postEvent(event).then(() => {
       commit('ADD_EVENT', event);
+      const notification = {
+        type: 'success',
+        message: 'Your event was created',
+      };
+      dispatch('notification/add', notification, { root: true });
+    }).catch((err) => {
+      const notification = {
+        type: 'error',
+        message: 'Your event was not created ' + err.message,
+      };
+      dispatch('notification/add', notification, { root: true });
+      throw(err);
     });
   },
-  fetchEvent({commit, getters}, id) {
+  fetchEvent({commit, dispatch, getters}, id) {
     const event = getters.getEventById(id);
     if (event) {
       commit('SET_EVENT', event);
@@ -37,26 +49,31 @@ export const actions = {
       EventService.getEvent(id)
       .then((res: { data: object }) => {
         commit('SET_EVENT', res.data);
-      }).catch((err: object) => {
-        throw(err);
+      }).catch((err) => {
+        const notification = {
+          type: 'error',
+          message: 'There was an issue: ' + err.message,
+        };
+        dispatch('notification/add', notification, { root: true });
       });
     }
   },
-  fetchEvents({ commit }, { perPage, page }) {
+  fetchEvents({ commit, dispatch }, { perPage, page }) {
     EventService.getEvents(perPage, page)
     .then((res) => {
       commit('SET_EVENTS', res.data);
       commit('SET_EVENTS_LENGTH', res.headers['x-total-count']);
     }).catch((err) => {
-      throw(err);
+      const notification = {
+        type: 'error',
+        message: 'There was an issue: ' + err.message,
+      };
+      dispatch('notification/add', notification, { root: true });
     });
   },
 };
 
 export const getters = {
-  catLength: (state) => {
-    return state.categories.length;
-  },
   getEventById: (state) => (id: number) => {
     return state.events.find((event) => event.id === id);
   },

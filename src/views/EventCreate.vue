@@ -87,7 +87,7 @@ import Datepicker from 'vuejs-datepicker';
       }
     },
     computed: {
-      ...mapGetters(['getEventById']),
+      ...mapGetters('event', ['getEventById']),
       ...mapState(['user']),
       catLength() : number {
         return this.$store.getters.catLength;
